@@ -3,33 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Snake (Single-file) – Highscores</title>
+  <title>Snake (Single-file) – Retro Blue</title>
   <style>
     :root{
-      --bg:#0f1115;
-      --surface:#171a21;
-      --surface2:#1e2230;
-      --border:rgba(255,255,255,.08);
-      --text:#e8e8ea;
-      --muted:#b0b3bb;
-      --accent:#8ab4f8;
-      --good:#3ddc97;
-      --danger:#ff6b6b;
+      --bg0:#050816;
+      --bg1:#070b1f;
+      --panel0:#0a1130;
+      --panel1:#0b1a46;
+      --panel2:#0a1437;
+
+      --text:#eaf2ff;
+      --muted:#a8b9d6;
+
+      --blue0:#2dd4ff;
+      --blue1:#60a5fa;
+      --blue2:#2563eb;
+
+      --green:#22c55e;
+      --red:#ff4d6d;
+
+      --border:#1c2b5a;
 
       --radius:14px;
+      --shadow: 0 10px 0 rgba(0,0,0,.35);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
-      background: var(--bg);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      letter-spacing: .2px;
+      background:
+        /* scanlines */
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,0.04) 0px,
+          rgba(255,255,255,0.04) 1px,
+          rgba(0,0,0,0) 2px,
+          rgba(0,0,0,0) 6px
+        ),
+        /* subtle noise */
+        radial-gradient(900px 520px at 15% 10%, rgba(96,165,250,.25) 0%, rgba(0,0,0,0) 60%),
+        radial-gradient(760px 460px at 85% 15%, rgba(45,212,255,.22) 0%, rgba(0,0,0,0) 58%),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
+      min-height:100%;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:16px;
+      padding: 16px;
     }
 
     .wrap{
@@ -39,9 +62,12 @@
     }
 
     header{
-      background: var(--surface);
-      border:1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(45,212,255,.16), rgba(37,99,235,.10)),
+        linear-gradient(180deg, var(--panel0), var(--panel1));
+      border:2px solid var(--border);
       border-radius: var(--radius);
+      box-shadow: var(--shadow);
       padding: 14px;
       display:flex;
       align-items:center;
@@ -57,43 +83,58 @@
       min-width: 260px;
     }
     .logo{
-      width:34px;height:34px;border-radius:10px;
-      background: #2b3244;
-      border:1px solid var(--border);
+      width:36px;height:36px;border-radius:10px;
+      background: linear-gradient(180deg, var(--blue0), var(--blue2));
+      border:2px solid #0f2a6b;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.35) inset;
     }
     .title{ line-height:1.2; }
     .title h1{
-      font-size: 15px;
+      font-size: 16px;
       margin:0;
-      letter-spacing:.2px;
-      font-weight: 650;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .title p{
-      margin:4px 0 0 0;
+      margin:6px 0 0 0;
       color:var(--muted);
       font-size:12px;
+      letter-spacing:.3px;
     }
 
     .stats{
       display:flex;
-      gap:16px;
+      gap:12px;
       align-items:center;
       flex-wrap:wrap;
       justify-content:flex-end;
       font-variant-numeric: tabular-nums;
     }
     .stat{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      padding-left:12px;
-      border-left:1px solid var(--border);
+      background: linear-gradient(180deg, #0a173e, #07122f);
+      border:2px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 10px;
+      min-width: 92px;
+      box-shadow: 0 6px 0 rgba(0,0,0,.28);
     }
-    .stat:first-child{ border-left:none; padding-left:0; }
-    .stat span{ color:var(--muted); font-size:11px; }
-    .stat strong{ font-size:14px; font-weight:650; }
-    .stat .accent{ color: var(--accent); }
-    .stat .good{ color: var(--good); }
+    .stat span{
+      color:var(--muted);
+      font-size:11px;
+      display:block;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+    .stat strong{
+      font-size:14px;
+      display:block;
+      margin-top:4px;
+      font-weight: 800;
+      text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
+    .stat .accent{ color: var(--blue0); }
+    .stat .good{ color: var(--green); }
 
     main{
       display:grid;
@@ -102,9 +143,12 @@
     }
 
     .panel{
-      background: var(--surface);
-      border:1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(96,165,250,.12), rgba(37,99,235,.08)),
+        linear-gradient(180deg, var(--panel2), var(--panel1));
+      border:2px solid var(--border);
       border-radius: var(--radius);
+      box-shadow: var(--shadow);
       overflow:hidden;
     }
 
@@ -114,7 +158,10 @@
       padding: 14px;
       display:grid;
       place-items:center;
-      background: var(--surface);
+      background:
+        linear-gradient(180deg, rgba(45,212,255,.10), rgba(0,0,0,0)),
+        linear-gradient(180deg, #070d25, #060a1d);
+      border-bottom:2px solid var(--border);
     }
 
     canvas{
@@ -122,18 +169,21 @@
       height: min(92vw, 560px);
       max-width: 560px;
       max-height: 560px;
-      background: #0b0d12;
+      background: #030612;
       border-radius: 12px;
-      border: 1px solid var(--border);
+      border:2px solid #0f2a6b;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.40) inset;
+      image-rendering: pixelated;
       touch-action: none;
     }
 
     .controls{
-      border-top:1px solid var(--border);
       padding: 12px 14px 14px;
       display:grid;
       gap:12px;
-      background: var(--surface);
+      background:
+        linear-gradient(180deg, rgba(96,165,250,.10), rgba(37,99,235,.06)),
+        linear-gradient(180deg, #070d25, #05081a);
     }
 
     .row{
@@ -147,37 +197,49 @@
     .btns{ display:flex; gap:10px; flex-wrap:wrap; }
     button, select, input[type="range"]{ font: inherit; }
 
+    /* Retro "arcade" buttons */
     .btn{
-      border:1px solid var(--border);
-      background: var(--surface2);
+      border:2px solid #0f2a6b;
+      background: linear-gradient(180deg, #0b2b6f, #091e4c);
       color:var(--text);
       padding: 10px 12px;
       border-radius: 12px;
       cursor:pointer;
-      transition: background .15s ease, border-color .15s ease;
       display:inline-flex;
       gap:8px;
       align-items:center;
       user-select:none;
+      box-shadow: 0 6px 0 rgba(0,0,0,.32);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-weight: 800;
+      font-size: 12px;
     }
-    .btn:hover{ background: #262c3d; border-color: rgba(255,255,255,.12); }
-    .btn:active{ transform: translateY(1px); }
+    .btn:hover{
+      filter: brightness(1.06);
+    }
+    .btn:active{
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,.32);
+    }
 
     .btn.primary{
-      background: var(--accent);
-      color: #0b0d12;
-      border-color: transparent;
+      background: linear-gradient(180deg, var(--blue0), var(--blue2));
+      border-color: #0f2a6b;
+      color:#031022;
     }
-    .btn.primary:hover{ filter: brightness(1.05); }
 
     .btn.danger{
-      background: transparent;
-      border-color: rgba(255,107,107,.45);
-      color: var(--danger);
+      background: linear-gradient(180deg, #ff6b6b, #ff2e5f);
+      border-color: #5b0c23;
+      color:#16040a;
     }
-    .btn.danger:hover{ background: rgba(255,107,107,.10); }
 
-    .kbd{ font-size:12px; color:var(--muted); }
+    .kbd{
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.4px;
+    }
 
     .settings{
       display:grid;
@@ -190,28 +252,34 @@
       gap:10px;
       align-items:center;
     }
-    .field label{ color:var(--muted); font-size:12px; }
+    .field label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
     .field select, .field input[type="range"]{
       width:100%;
       border-radius: 12px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #0a173e, #07122f);
+      border:2px solid #0f2a6b;
       color: var(--text);
       padding: 10px 10px;
       outline:none;
+      box-shadow: 0 4px 0 rgba(0,0,0,.25);
     }
 
     .hint{
       font-size:12px;
       color:var(--muted);
-      line-height:1.45;
+      line-height:1.5;
     }
 
     .touchpad{ display:grid; gap:10px; }
     .dpad{
       display:grid;
-      grid-template-columns: 56px 56px 56px;
-      grid-template-rows: 56px 56px 56px;
+      grid-template-columns: 54px 54px 54px;
+      grid-template-rows: 54px 54px 54px;
       gap:10px;
       place-content:center;
       margin-inline:auto;
@@ -219,10 +287,10 @@
     }
     .dpad .spacer{opacity:0}
     .dpad button{
-      width:56px;height:56px;
+      width:54px;height:54px;
       justify-content:center;
-      border-radius: 14px;
-      font-size:16px;
+      border-radius: 12px;
+      font-size: 14px;
       padding:0;
     }
 
@@ -238,16 +306,16 @@
       padding-left:18px;
       font-size:13px;
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.75;
     }
     .hs-item strong{ color: var(--text); }
-    .hs-meta{ opacity:.75; margin-left:6px; font-size:12px; }
+    .hs-meta{ opacity:.8; margin-left:6px; font-size:12px; }
 
     @media (min-width: 900px){
       main{ grid-template-columns: 1fr 360px; align-items:start; }
       .controls{
         border-top:none;
-        border-left:1px solid var(--border);
+        border-left:2px solid var(--border);
         padding: 14px;
       }
       .game{ grid-template-columns: 1fr 360px; }
@@ -259,15 +327,18 @@
       left: 50%;
       bottom: 18px;
       transform: translateX(-50%);
-      background: #11141b;
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #0a173e, #07122f);
+      border:2px solid #0f2a6b;
       color: var(--text);
       padding: 10px 12px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12px;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 0 rgba(0,0,0,.30);
       opacity: 0;
       pointer-events:none;
-      transition: opacity .15s ease, transform .15s ease;
+      transition: opacity .12s ease, transform .12s ease;
     }
     .toast.show{
       opacity: 1;
@@ -356,7 +427,7 @@
 
       <aside class="panel" style="padding:14px;">
         <div class="hs-head">
-          <h2 style="margin:0; font-size:14px;">🏆 Highscores</h2>
+          <h2 style="margin:0; font-size:14px; text-transform:uppercase; letter-spacing:.8px;">🏆 Highscores</h2>
           <button id="btnClearScores" class="btn" type="button" title="Rensa highscores">🗑 Rensa</button>
         </div>
 
@@ -365,7 +436,7 @@
         </ol>
 
         <p class="hint" style="margin-top:10px;">
-          Sparas lokalt i din webbläsare (localStorage). Byt enhet/webbläsare = ny lista.
+          Sparas lokalt (localStorage). Byt enhet/webbläsare = ny lista.
         </p>
       </aside>
     </main>
@@ -629,11 +700,13 @@
     const oy = Math.floor((H - cell*grid)/2);
 
     ctx.clearRect(0,0,W,H);
-    ctx.fillStyle = "#0b0d12";
+
+    // Background (retro blue)
+    ctx.fillStyle = "#030612";
     ctx.fillRect(0,0,W,H);
 
-    // grid
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
+    // Grid
+    ctx.strokeStyle = "rgba(45,212,255,0.10)";
     ctx.lineWidth = 1;
     for(let i=0;i<=grid;i++){
       const x = ox + i*cell;
@@ -649,64 +722,66 @@
       ctx.stroke();
     }
 
-    // food
+    // Food (red)
     const fx = ox + food.x*cell;
     const fy = oy + food.y*cell;
-    ctx.fillStyle = "#ff6b6b";
+    ctx.fillStyle = "#ff4d6d";
     ctx.beginPath();
     roundRect(ctx, fx+2, fy+2, cell-4, cell-4, Math.max(6, cell*0.25));
     ctx.fill();
 
-    // snake
+    // Snake (green body, blue head)
     for(let i=0;i<snake.length;i++){
       const p = snake[i];
       const x = ox + p.x*cell;
       const y = oy + p.y*cell;
       const isHead = i === snake.length-1;
 
-      ctx.fillStyle = isHead ? "#8ab4f8" : "#3ddc97";
+      ctx.fillStyle = isHead ? "#2dd4ff" : "#22c55e";
       ctx.beginPath();
       roundRect(ctx, x+2, y+2, cell-4, cell-4, Math.max(6, cell*0.25));
       ctx.fill();
     }
 
     if(!running && !gameOver){
-      overlay("Tryck Start", "Piltangenter/WASD • Swipe • P för paus");
+      overlay("TRYCK START", "PILTANGENTER/WASD • SWIPE • P FÖR PAUS");
     }
     if(gameOver){
-      overlay("Game Over", "Tryck Restart eller Start");
+      overlay("GAME OVER", "TRYCK RESTART ELLER START");
     }
     if(paused){
-      overlay("Paus", "Tryck Pause eller P för att fortsätta");
+      overlay("PAUS", "TRYCK PAUSE ELLER P FÖR ATT FORTSÄTTA");
     }
   }
 
   function overlay(title, subtitle){
     const W = canvas.width, H = canvas.height;
     ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.45)";
+    ctx.fillStyle = "rgba(0,0,0,0.55)";
     ctx.fillRect(0,0,W,H);
 
-    ctx.fillStyle = "#12151d";
-    ctx.strokeStyle = "rgba(255,255,255,0.10)";
-    ctx.lineWidth = 1;
-    const boxW = Math.min(420, W-80);
-    const boxH = 150;
+    ctx.fillStyle = "#07122f";
+    ctx.strokeStyle = "rgba(45,212,255,0.35)";
+    ctx.lineWidth = 2;
+
+    const boxW = Math.min(440, W-80);
+    const boxH = 160;
     const x = (W-boxW)/2;
     const y = (H-boxH)/2;
 
+    ctx.beginPath();
     roundRect(ctx, x, y, boxW, boxH, 14);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = "#e8e8ea";
     ctx.textAlign = "center";
-    ctx.font = "700 26px ui-sans-serif, system-ui";
-    ctx.fillText(title, W/2, y+62);
+    ctx.fillStyle = "#eaf2ff";
+    ctx.font = "800 26px ui-monospace, monospace";
+    ctx.fillText(title, W/2, y+70);
 
-    ctx.fillStyle = "rgba(232,232,234,0.75)";
-    ctx.font = "500 14px ui-sans-serif, system-ui";
-    ctx.fillText(subtitle, W/2, y+95);
+    ctx.fillStyle = "rgba(234,242,255,0.78)";
+    ctx.font = "700 12px ui-monospace, monospace";
+    ctx.fillText(subtitle, W/2, y+102);
     ctx.restore();
   }
 
@@ -827,6 +902,129 @@
       clearHighscores();
     }
   });
+
+  // ====== highscores ======
+  function loadHighscores(){
+    try { return JSON.parse(localStorage.getItem(SCORES_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveHighscore(newScore){
+    const list = loadHighscores();
+    list.push({ score: newScore, date: new Date().toISOString() });
+    list.sort((a,b) => b.score - a.score);
+    localStorage.setItem(SCORES_KEY, JSON.stringify(list.slice(0, MAX_SCORES)));
+  }
+
+  function renderHighscores(){
+    const list = loadHighscores();
+    if(!hsListEl) return;
+
+    if(list.length === 0){
+      hsListEl.innerHTML = "<li>Inga scores ännu</li>";
+      return;
+    }
+
+    hsListEl.innerHTML = list.map((s) => {
+      const d = new Date(s.date);
+      const dateStr = d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+      return `<li class="hs-item"><strong>${s.score}</strong><span class="hs-meta">– ${dateStr}</span></li>`;
+    }).join("");
+  }
+
+  function clearHighscores(){
+    localStorage.removeItem(SCORES_KEY);
+    localStorage.removeItem(BEST_KEY);
+    bestEl.textContent = "0";
+    showToast("Highscores rensade");
+    renderHighscores();
+  }
+
+  // ====== core ======
+  function resetState(){
+    grid = Number(sizeSelect.value);
+    wrap = wrapSelect.value === "on";
+    speed = Number(speedInput.value);
+
+    score = 0;
+    snake = [];
+    const mid = Math.floor(grid/2);
+    snake.push({x: mid-1, y: mid});
+    snake.push({x: mid,   y: mid});
+    snake.push({x: mid+1, y: mid});
+    dir = {x: 1, y: 0};
+    nextDir = {x: 1, y: 0};
+    spawnFood();
+    running = false;
+    paused = false;
+    gameOver = false;
+    acc = 0;
+    lastTime = 0;
+    updateHUD();
+    draw();
+  }
+
+  function step(){
+    if(gameOver || paused || !running) return;
+
+    dir = nextDir;
+
+    const head = snake[snake.length-1];
+    let nx = head.x + dir.x;
+    let ny = head.y + dir.y;
+
+    if(wrap){
+      if(nx < 0) nx = grid-1;
+      if(nx >= grid) nx = 0;
+      if(ny < 0) ny = grid-1;
+      if(ny >= grid) ny = 0;
+    } else {
+      if(nx < 0 || nx >= grid || ny < 0 || ny >= grid){
+        endGame();
+        return;
+      }
+    }
+
+    const nextHead = {x: nx, y: ny};
+    const tail = snake[0];
+    const willEat = (nextHead.x === food.x && nextHead.y === food.y);
+
+    for(let i=0;i<snake.length;i++){
+      const p = snake[i];
+      const isTail = (p.x === tail.x && p.y === tail.y && i === 0);
+      if(p.x === nextHead.x && p.y === nextHead.y){
+        if(isTail && !willEat){
+          // ok
+        } else {
+          endGame();
+          return;
+        }
+      }
+    }
+
+    snake.push(nextHead);
+
+    if(willEat){
+      score += 1;
+      speed = clamp(speed + 0.15, 6, 22);
+      speedInput.value = String(Math.round(speed));
+      spawnFood();
+      showToast("+1");
+    } else {
+      snake.shift();
+    }
+
+    updateHUD();
+    draw();
+  }
+
+  // ====== toast/status ======
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove("show"), 1400);
+  }
 
   // Init
   bestEl.textContent = String(readBest());
