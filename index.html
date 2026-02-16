@@ -500,6 +500,54 @@ button, select, input[type="range"]{ font: inherit; }
     padding-top: max(10px, env(safe-area-inset-top));
   }
 }
+@media (max-width: 520px){
+  /* Gör layouten mer mobil: canvas överst, kontroller under */
+  main{
+    grid-template-columns: 1fr !important;
+  }
+
+  .canvas-wrap{
+    padding: 10px !important;
+  }
+
+  /* Viktigaste fixen: lås canvas till en kvadrat med rimlig höjd */
+  canvas{
+    width: 100% !important;
+    max-width: 100% !important;
+
+    aspect-ratio: 1 / 1;         /* <-- gör den kvadratisk */
+    height: auto !important;      /* <-- låt aspect-ratio styra höjden */
+
+    /* fallback ifall aspect-ratio inte beter sig */
+    min-height: 320px;            /* <-- så den inte blir en tunn remsa */
+  }
+
+  /* Ta bort lite extra vertikal spacing så allt får plats */
+  .controls{
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  /* Gör knapparna mer touch-vänliga */
+  .btns{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  #btnStart{ grid-column: 1 / -1; }
+
+  /* D-pad lite större och centrerad */
+  .dpad{
+    grid-template-columns: 64px 64px 64px !important;
+    grid-template-rows: 64px 64px 64px !important;
+  }
+  .dpad button{
+    width: 64px !important;
+    height: 64px !important;
+    font-size: 16px !important;
+  }
+}
 
 
     </style>
