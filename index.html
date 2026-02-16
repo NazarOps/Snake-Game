@@ -475,6 +475,21 @@ button, select, input[type="range"]{ font: inherit; }
     padding: 12px !important;
   }
 }
+/* ===== Desktop fix: visa hastighets-slider ===== */
+.controls{
+  min-width: 0;            /* låt kolumnen krympa korrekt */
+  overflow: visible;       /* kapa inte inuti */
+}
+
+.field{
+  min-width: 0;            /* viktigt i grid */
+}
+
+.field input[type="range"]{
+  display: block;
+  width: 100% !important;  /* slider alltid synlig och fullbredd */
+  margin: 0;
+}
 
 
     </style>
