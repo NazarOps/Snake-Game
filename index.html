@@ -6,283 +6,273 @@
   <title>Snake (Single-file) – Highscores</title>
   <style>
     :root{
-  --bg:#0f1115;
-  --surface:#171a21;
-  --surface2:#1e2230;
-  --border:rgba(255,255,255,.08);
-  --text:#e8e8ea;
-  --muted:#b0b3bb;
-  --accent:#8ab4f8;
-  --good:#3ddc97;
-  --danger:#ff6b6b;
+      --bg:#0f1115;
+      --surface:#171a21;
+      --surface2:#1e2230;
+      --border:rgba(255,255,255,.08);
+      --text:#e8e8ea;
+      --muted:#b0b3bb;
+      --accent:#8ab4f8;
+      --good:#3ddc97;
+      --danger:#ff6b6b;
 
-  --radius:14px;
-}
+      --radius:14px;
+    }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  color:var(--text);
-  background: var(--bg);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background: var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
 
-.wrap{
-  width:min(980px, 100%);
-  display:grid;
-  gap:14px;
-}
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      gap:14px;
+    }
 
-/* Header: mer “app”, mindre “glow” */
-header{
-  background: var(--surface);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
+    header{
+      background: var(--surface);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-.brand{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  min-width: 260px;
-}
-.logo{
-  width:34px;height:34px;border-radius:10px;
-  background: #2b3244; /* platt */
-  border:1px solid var(--border);
-}
-.title{ line-height:1.2; }
-.title h1{
-  font-size: 15px;
-  margin:0;
-  letter-spacing:.2px;
-  font-weight: 650;
-}
-.title p{
-  margin:4px 0 0 0;
-  color:var(--muted);
-  font-size:12px;
-}
+    .brand{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-width: 260px;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:10px;
+      background: #2b3244;
+      border:1px solid var(--border);
+    }
+    .title{ line-height:1.2; }
+    .title h1{
+      font-size: 15px;
+      margin:0;
+      letter-spacing:.2px;
+      font-weight: 650;
+    }
+    .title p{
+      margin:4px 0 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
 
-/* “Stats” utan pills */
-.stats{
-  display:flex;
-  gap:16px;
-  align-items:center;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-  font-variant-numeric: tabular-nums;
-}
-.stat{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  padding-left:12px;
-  border-left:1px solid var(--border);
-}
-.stat:first-child{ border-left:none; padding-left:0; }
-.stat span{ color:var(--muted); font-size:11px; }
-.stat strong{ font-size:14px; font-weight:650; }
-.stat .accent{ color: var(--accent); }
-.stat .good{ color: var(--good); }
+    .stats{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      padding-left:12px;
+      border-left:1px solid var(--border);
+    }
+    .stat:first-child{ border-left:none; padding-left:0; }
+    .stat span{ color:var(--muted); font-size:11px; }
+    .stat strong{ font-size:14px; font-weight:650; }
+    .stat .accent{ color: var(--accent); }
+    .stat .good{ color: var(--good); }
 
-main{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:14px;
-}
+    main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
 
-.panel{
-  background: var(--surface);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  overflow:hidden;
-}
+    .panel{
+      background: var(--surface);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
 
-/* Layout */
-.game{ display:grid; grid-template-columns:1fr; }
+    .game{ display:grid; grid-template-columns:1fr; }
 
-.canvas-wrap{
-  padding: 14px;
-  display:grid;
-  place-items:center;
-  background: var(--surface); /* platt */
-}
+    .canvas-wrap{
+      padding: 14px;
+      display:grid;
+      place-items:center;
+      background: var(--surface);
+    }
 
-canvas{
-  width: min(92vw, 560px);
-  height: min(92vw, 560px);
-  max-width: 560px;
-  max-height: 560px;
-  background: #0b0d12;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  touch-action: none;
-}
+    canvas{
+      width: min(92vw, 560px);
+      height: min(92vw, 560px);
+      max-width: 560px;
+      max-height: 560px;
+      background: #0b0d12;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      touch-action: none;
+    }
 
-.controls{
-  border-top:1px solid var(--border);
-  padding: 12px 14px 14px;
-  display:grid;
-  gap:12px;
-  background: var(--surface);
-}
+    .controls{
+      border-top:1px solid var(--border);
+      padding: 12px 14px 14px;
+      display:grid;
+      gap:12px;
+      background: var(--surface);
+    }
 
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-}
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
 
-.btns{ display:flex; gap:10px; flex-wrap:wrap; }
-button, select, input[type="range"]{ font: inherit; }
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; }
+    button, select, input[type="range"]{ font: inherit; }
 
-/* Buttons: mer “produkt”, mindre “glass” */
-.btn{
-  border:1px solid var(--border);
-  background: var(--surface2);
-  color:var(--text);
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor:pointer;
-  transition: background .15s ease, border-color .15s ease;
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  user-select:none;
-}
-.btn:hover{ background: #262c3d; border-color: rgba(255,255,255,.12); }
-.btn:active{ transform: translateY(1px); }
+    .btn{
+      border:1px solid var(--border);
+      background: var(--surface2);
+      color:var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      user-select:none;
+    }
+    .btn:hover{ background: #262c3d; border-color: rgba(255,255,255,.12); }
+    .btn:active{ transform: translateY(1px); }
 
-.btn.primary{
-  background: var(--accent);
-  color: #0b0d12;
-  border-color: transparent;
-}
-.btn.primary:hover{ filter: brightness(1.05); }
+    .btn.primary{
+      background: var(--accent);
+      color: #0b0d12;
+      border-color: transparent;
+    }
+    .btn.primary:hover{ filter: brightness(1.05); }
 
-.btn.danger{
-  background: transparent;
-  border-color: rgba(255,107,107,.45);
-  color: var(--danger);
-}
-.btn.danger:hover{ background: rgba(255,107,107,.10); }
+    .btn.danger{
+      background: transparent;
+      border-color: rgba(255,107,107,.45);
+      color: var(--danger);
+    }
+    .btn.danger:hover{ background: rgba(255,107,107,.10); }
 
-.kbd{ font-size:12px; color:var(--muted); }
+    .kbd{ font-size:12px; color:var(--muted); }
 
-/* Settings */
-.settings{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:10px;
-}
-.field{
-  display:grid;
-  grid-template-columns: 120px 1fr;
-  gap:10px;
-  align-items:center;
-}
-.field label{ color:var(--muted); font-size:12px; }
-.field select, .field input[type="range"]{
-  width:100%;
-  border-radius: 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 10px;
-  outline:none;
-}
+    .settings{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .field{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+      align-items:center;
+    }
+    .field label{ color:var(--muted); font-size:12px; }
+    .field select, .field input[type="range"]{
+      width:100%;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 10px;
+      outline:none;
+    }
 
-.hint{
-  font-size:12px;
-  color:var(--muted);
-  line-height:1.45;
-}
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
 
-/* Touchpad */
-.touchpad{ display:grid; gap:10px; }
-.dpad{
-  display:grid;
-  grid-template-columns: 56px 56px 56px;
-  grid-template-rows: 56px 56px 56px;
-  gap:10px;
-  place-content:center;
-  margin-inline:auto;
-  user-select:none;
-}
-.dpad .spacer{opacity:0}
-.dpad button{
-  width:56px;height:56px;
-  justify-content:center;
-  border-radius: 14px;
-  font-size:16px;
-  padding:0;
-}
+    .touchpad{ display:grid; gap:10px; }
+    .dpad{
+      display:grid;
+      grid-template-columns: 56px 56px 56px;
+      grid-template-rows: 56px 56px 56px;
+      gap:10px;
+      place-content:center;
+      margin-inline:auto;
+      user-select:none;
+    }
+    .dpad .spacer{opacity:0}
+    .dpad button{
+      width:56px;height:56px;
+      justify-content:center;
+      border-radius: 14px;
+      font-size:16px;
+      padding:0;
+    }
 
-/* Highscores panel */
-.hs-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
-}
-.hs-list{
-  margin:0;
-  padding-left:18px;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.7;
-}
-.hs-item strong{ color: var(--text); }
-.hs-meta{ opacity:.75; margin-left:6px; font-size:12px; }
+    .hs-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .hs-list{
+      margin:0;
+      padding-left:18px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .hs-item strong{ color: var(--text); }
+    .hs-meta{ opacity:.75; margin-left:6px; font-size:12px; }
 
-/* Responsive */
-@media (min-width: 900px){
-  main{ grid-template-columns: 1fr 360px; align-items:start; }
-  .controls{
-    border-top:none;
-    border-left:1px solid var(--border);
-    padding: 14px;
-  }
-  .game{ grid-template-columns: 1fr 360px; }
-  .canvas-wrap{ padding: 18px; }
-}
+    @media (min-width: 900px){
+      main{ grid-template-columns: 1fr 360px; align-items:start; }
+      .controls{
+        border-top:none;
+        border-left:1px solid var(--border);
+        padding: 14px;
+      }
+      .game{ grid-template-columns: 1fr 360px; }
+      .canvas-wrap{ padding: 18px; }
+    }
 
-/* Toast: mer diskret */
-.toast{
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  background: #11141b;
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  opacity: 0;
-  pointer-events:none;
-  transition: opacity .15s ease, transform .15s ease;
-}
-.toast.show{
-  opacity: 1;
-  transform: translateX(-50%) translateY(-6px);
-}
-
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: #11141b;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
+    }
   </style>
 </head>
 <body>
@@ -291,7 +281,7 @@ button, select, input[type="range"]{ font: inherit; }
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <div class="title">
-          <h1>Snake – single-file (index.html)</h1>
+          <h1>Snake</h1>
           <p>Desktop: piltangenter/WASD • Mobil: swipe eller knappar • P för paus</p>
         </div>
       </div>
@@ -301,7 +291,6 @@ button, select, input[type="range"]{ font: inherit; }
         <div class="stat"><span>Best</span><strong id="best" class="good">0</strong></div>
         <div class="stat"><span>Status</span><strong id="status">Ready</strong></div>
       </div>
-
     </header>
 
     <main>
@@ -365,7 +354,6 @@ button, select, input[type="range"]{ font: inherit; }
         </div>
       </section>
 
-      <!-- Highscores panel -->
       <aside class="panel" style="padding:14px;">
         <div class="hs-head">
           <h2 style="margin:0; font-size:14px;">🏆 Highscores</h2>
@@ -509,8 +497,7 @@ button, select, input[type="range"]{ font: inherit; }
 
   function updateHUD(){
     scoreEl.textContent = String(score);
-    const best = readBest();
-    bestEl.textContent = String(best);
+    bestEl.textContent = String(readBest());
   }
 
   function spawnFood(){
@@ -560,7 +547,6 @@ button, select, input[type="range"]{ font: inherit; }
     gameOver = true;
     setStatus("Game Over");
 
-    // save best + highscores
     const best = readBest();
     if(score > best){
       writeBest(score);
@@ -643,7 +629,7 @@ button, select, input[type="range"]{ font: inherit; }
     const oy = Math.floor((H - cell*grid)/2);
 
     ctx.clearRect(0,0,W,H);
-    ctx.fillStyle = "#081025";
+    ctx.fillStyle = "#0b0d12";
     ctx.fillRect(0,0,W,H);
 
     // grid
@@ -666,9 +652,9 @@ button, select, input[type="range"]{ font: inherit; }
     // food
     const fx = ox + food.x*cell;
     const fy = oy + food.y*cell;
-    ctx.fillStyle = "#fb7185";
+    ctx.fillStyle = "#ff6b6b";
     ctx.beginPath();
-    ctx.roundRect(fx+2, fy+2, cell-4, cell-4, Math.max(6, cell*0.25));
+    roundRect(ctx, fx+2, fy+2, cell-4, cell-4, Math.max(6, cell*0.25));
     ctx.fill();
 
     // snake
@@ -678,9 +664,9 @@ button, select, input[type="range"]{ font: inherit; }
       const y = oy + p.y*cell;
       const isHead = i === snake.length-1;
 
-      ctx.fillStyle = isHead ? "#7dd3fc" : "#34d399";
+      ctx.fillStyle = isHead ? "#8ab4f8" : "#3ddc97";
       ctx.beginPath();
-      ctx.roundRect(x+2, y+2, cell-4, cell-4, Math.max(6, cell*0.25));
+      roundRect(ctx, x+2, y+2, cell-4, cell-4, Math.max(6, cell*0.25));
       ctx.fill();
     }
 
@@ -698,10 +684,10 @@ button, select, input[type="range"]{ font: inherit; }
   function overlay(title, subtitle){
     const W = canvas.width, H = canvas.height;
     ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.40)";
+    ctx.fillStyle = "rgba(0,0,0,0.45)";
     ctx.fillRect(0,0,W,H);
 
-    ctx.fillStyle = "rgba(16,26,48,0.92)";
+    ctx.fillStyle = "#12151d";
     ctx.strokeStyle = "rgba(255,255,255,0.10)";
     ctx.lineWidth = 1;
     const boxW = Math.min(420, W-80);
@@ -709,36 +695,30 @@ button, select, input[type="range"]{ font: inherit; }
     const x = (W-boxW)/2;
     const y = (H-boxH)/2;
 
-    ctx.beginPath();
-    ctx.roundRect(x, y, boxW, boxH, 18);
+    roundRect(ctx, x, y, boxW, boxH, 14);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = "#e6edf7";
+    ctx.fillStyle = "#e8e8ea";
     ctx.textAlign = "center";
     ctx.font = "700 26px ui-sans-serif, system-ui";
     ctx.fillText(title, W/2, y+62);
 
-    ctx.fillStyle = "rgba(230,237,247,0.75)";
+    ctx.fillStyle = "rgba(232,232,234,0.75)";
     ctx.font = "500 14px ui-sans-serif, system-ui";
     ctx.fillText(subtitle, W/2, y+95);
     ctx.restore();
   }
 
-  // roundRect polyfill
-  if(!CanvasRenderingContext2D.prototype.roundRect){
-    CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
-      const min = Math.min(w,h);
-      if(r > min/2) r = min/2;
-      this.beginPath();
-      this.moveTo(x+r, y);
-      this.arcTo(x+w, y, x+w, y+h, r);
-      this.arcTo(x+w, y+h, x, y+h, r);
-      this.arcTo(x, y+h, x, y, r);
-      this.arcTo(x, y, x+w, y, r);
-      this.closePath();
-      return this;
-    }
+  function roundRect(ctx, x, y, w, h, r){
+    const min = Math.min(w,h);
+    if(r > min/2) r = min/2;
+    ctx.moveTo(x+r, y);
+    ctx.arcTo(x+w, y, x+w, y+h, r);
+    ctx.arcTo(x+w, y+h, x, y+h, r);
+    ctx.arcTo(x, y+h, x, y, r);
+    ctx.arcTo(x, y, x+w, y, r);
+    ctx.closePath();
   }
 
   // ====== LOOP ======
@@ -783,7 +763,7 @@ button, select, input[type="range"]{ font: inherit; }
   let touchStart = null;
   canvas.addEventListener("pointerdown", (e) => {
     canvas.setPointerCapture?.(e.pointerId);
-    touchStart = {x: e.clientX, y: e.clientY, t: performance.now()};
+    touchStart = {x: e.clientX, y: e.clientY};
   });
 
   canvas.addEventListener("pointermove", (e) => {
